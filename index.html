@@ -56,7 +56,7 @@
         </div>
     </section>
 
-    <script src="js/data.js"></script>
+    <script src="data.js"></script>
     <script>
         document.getElementById('cats').innerHTML = CATEGORIES.map(c =>
             `<a class="cat" href="dashboard.html?cat=${encodeURIComponent(c.name)}" style="background:${c.bg}"><span class="em">${c.icon}</span>${c.name} →</a>`).join('');

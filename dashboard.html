@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard | Smart Shopping Assistant</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .nav-link,
+        .category-link,
+        .view-link {
+            cursor: pointer;
+            text-decoration: none
+        }
+
+        .nav-link:hover,
+        .category-link:hover,
+        .view-link:hover {
+            color: #2563eb
+        }
+
+        #viewModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #0008;
+            z-index: 9999;
+            padding: 20px;
+            overflow: auto
+        }
+
+        #viewModal.open {
+            display: block
+        }
+
+        .modal-box {
+            background: white;
+            color: #222;
+            max-width: 750px;
+            margin: 30px auto;
+            padding: 22px;
+            border-radius: 14px
+        }
+
+        .modal-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px
+        }
+
+        .modal-close {
+            font-size: 24px;
+            border: 0;
+            background: none;
+            cursor: pointer
+        }
+
+        .modal-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee
+        }
+
+        .modal-item button {
+            cursor: pointer;
+            padding: 6px 10px
+        }
+
+        .category-link {
+            display: block
+        }
+
+        #budgetWarning {
+            font-size: 12px;
+            margin-top: 8px
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo"><span class="ic">🛍️</span>
+            <div>Smart Shopping<br>Assistant</div>
+        </div>
+        <div class="search">
+            <input id="q" placeholder="Search for products, brands and more...">
+            <button type="button" onclick="document.getElementById('q').focus()">🔍</button>
+        </div>
+        <div class="hdr-actions">
+            <a href="index.html">🏠 Home</a>
+            <a href="#" onclick="showView('wishlist');return false">♡ Wishlist <span class="badge"
+                    id="wishCount">0</span></a>
+            <a href="#" onclick="showView('cart');return false">🛒 Cart <span class="badge" id="cartCount">0</span></a>
+        </div>
+    </header>
+
+    <div class="layout">
+        <aside class="card side">
+            <a class="active" href="index.html">🏠 Home</a>
+            <a href="#products" onclick="setTab('More')">🛍️ Shop</a>
+            <a href="#panelCmp">⚖️ Price Comparison</a>
+            <a href="#panelList">📋 Shopping List</a>
+            <a href="#panelBudget">💰 Budget Tracker</a>
+            <a href="#" onclick="showView('wishlist');return false">♡ Wishlist</a>
+            <a href="#" onclick="showView('cart');return false">🛒 Cart</a>
+
+            <h4>Categories</h4>
+            <a class="category-link" href="#products" onclick="setTab('Groceries')">🥦 Groceries</a>
+            <a class="category-link" href="#products" onclick="setTab('Clothes')">👗 Clothes &amp; Fashion</a>
+            <a class="category-link" href="#products" onclick="setTab('Electronics')">💻 Electronics</a>
+            <a class="category-link" href="#products" onclick="setTab('Home & Kitchen')">🍳 Home &amp; Kitchen</a>
+            <a class="category-link" href="#products" onclick="setTab('Beauty & Personal Care')">🧴 Beauty &amp;
+                Personal Care</a>
+            <a class="category-link" href="#products" onclick="setTab('Sports & Fitness')">🏋️ Sports &amp; Fitness</a>
+            <a class="category-link" href="#products" onclick="setTab('Books & Stationery')">📚 Books &amp;
+                Stationery</a>
+            <a class="category-link" href="#products" onclick="setTab('Watches')">⌚ Watches</a>
+            <a class="category-link" href="#products" onclick="setTab('Footwear')">👟 Footwear</a>
+            <a class="category-link" href="#products" onclick="setTab('More')">☰ All Categories</a>
+        </aside>
+
+        <main>
+            <div class="greet">
+                <div>
+                    <h3 id="greeting">Good Morning!</h3>
+                    <p>Smart choices. Better savings.</p>
+                </div>
+                <span style="font-size:40px">🛒</span>
+            </div>
+
+            <h4>Quick Actions</h4>
+            <div class="quick">
+                <div class="qa" style="background:#efe9fb"
+                    onclick="document.getElementById('panelCmp').scrollIntoView({behavior:'smooth'})">
+                    <b>Compare Prices</b><small>Find the best deals</small>
+                </div>
+                <div class="qa" style="background:#e5f6ec" onclick="document.getElementById('newItem').focus()">
+                    <b>Add to Shopping List</b><small>Plan your purchase</small>
+                </div>
+                <div class="qa" style="background:#fbf3d9"
+                    onclick="document.getElementById('panelBudget').scrollIntoView({behavior:'smooth'})">
+                    <b>Track Budget</b><small>Stay within budget</small>
+                </div>
+                <div class="qa" style="background:#fde8ea" onclick="showView('wishlist')">
+                    <b>View Wishlist</b><small>Your saved items</small>
+                </div>
+            </div>
+
+            <div class="sec-head">
+                <h4>Featured Products</h4>
+                <a href="#products" onclick="setTab('More')">View All →</a>
+            </div>
+            <div class="tabs" id="tabs"></div>
+            <div class="products" id="products"></div>
+        </main>
+
+        <aside>
+            <div class="card panel" id="panelCmp">
+                <h4>Price Comparison
+                    <a class="view-link" onclick="showView('comparison')" style="font-size:11px;color:var(--blue)">View
+                        All →</a>
+                </h4>
+                <div id="cmp"></div>
+            </div>
+
+            <div class="card panel" id="panelList">
+                <h4>My Shopping List
+                    <a class="view-link" onclick="showView('list')" style="font-size:11px;color:var(--blue)">View All
+                        →</a>
+                </h4>
+                <ul class="list" id="list"></ul>
+                <input id="newItem" placeholder="New item..."
+                    style="width:60%;padding:6px;border:1px solid var(--border);border-radius:6px;font-size:12px">
+                <button class="small-btn" onclick="addItem()">+ Add Item</button>
+                <div style="clear:both"></div>
+            </div>
+
+            <div class="card panel" id="panelBudget">
+                <h4>Budget Tracker</h4>
+                <div class="row"><span>Total Budget</span><b id="total">₹5,000</b></div>
+                <div class="row"><span>Spent</span><b id="spent">₹0</b></div>
+                <div class="bar"><i id="barFill"></i></div>
+                <div class="row"><span>Remaining</span><b id="remain">₹5,000</b></div>
+                <p id="budgetWarning"></p>
+            </div>
+        </aside>
+    </div>
+
+    <div id="viewModal" onclick="if(event.target===this)closeView()">
+        <div class="modal-box">
+            <div class="modal-head">
+                <h2 id="viewTitle">Shopping</h2>
+                <button class="modal-close" onclick="closeView()" aria-label="Close">✕</button>
+            </div>
+            <div id="viewContent"></div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

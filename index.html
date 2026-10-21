@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Smart Shopping Assistant</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo"><span class="ic">🛍️</span>
+            <div>Smart Shopping<br>Assistant</div>
+        </div>
+        <div class="search"><input placeholder="Search for products, brands and more..."><button>🔍</button></div>
+        <div class="hdr-actions"><a href="#">👤 Login / Sign Up</a><a href="#">♡ Wishlist</a><a
+                href="dashboard.html">🛒<span class="badge" id="cartCount">0</span></a></div>
+    </header>
+    <nav class="nav">
+        <a>☰ All Categories</a>
+        <a class="active" href="index.html">Home</a><a href="dashboard.html">Shop</a><a href="#">Deals</a><a
+            href="#">About Us</a><a href="#">Contact</a>
+    </nav>
+
+    <section class="hero">
+        <div>
+            <small>SMARTER SHOPPING / BETTER LIVING</small>
+            <h1>Upgrade Your<br>Everyday Shopping</h1>
+            <p>Discover the best products, latest trends and amazing deals — all in one place. Shop smarter, live
+                better!</p>
+            <a class="btn" href="dashboard.html">Shop Now →</a>
+        </div>
+        <div class="hero-art">🛒🥦🍎👟🎧💻👜<em>Better Choices, Brighter Days ♡</em></div>
+    </section>
+
+    <section class="section">
+        <div class="sec-head">
+            <h2>Top Categories</h2><a href="dashboard.html">View All →</a>
+        </div>
+        <div class="cats" id="cats"></div>
+    </section>
+
+    <section class="features">
+        <div class="feat"><span class="em">🚚</span>
+            <div><b>Free Shipping</b>On orders above ₹999</div>
+        </div>
+        <div class="feat"><span class="em">🛡️</span>
+            <div><b>Secure Payment</b>100% safe &amp; secure</div>
+        </div>
+        <div class="feat"><span class="em">🔄</span>
+            <div><b>Easy Returns</b>Hassle-free returns</div>
+        </div>
+        <div class="feat"><span class="em">🎧</span>
+            <div><b>24/7 Support</b>We're here to help</div>
+        </div>
+    </section>
+
+    <script src="js/data.js"></script>
+    <script>
+        document.getElementById('cats').innerHTML = CATEGORIES.map(c =>
+            `<a class="cat" href="dashboard.html?cat=${encodeURIComponent(c.name)}" style="background:${c.bg}"><span class="em">${c.icon}</span>${c.name} →</a>`).join('');
+        document.getElementById('cartCount').textContent = JSON.parse(localStorage.getItem('cart') || '[]').length;
+    </script>
+</body>
+
+</html>
